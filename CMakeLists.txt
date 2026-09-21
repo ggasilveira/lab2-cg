@@ -11,6 +11,8 @@ set(SOURCES
   src/textrendering.cpp
   src/tiny_obj_loader.cpp
   src/glad.c
+  src/solution.cpp
+  src/matrices.cpp
 )
 
 cmake_minimum_required(VERSION 3.5.0)
@@ -20,6 +22,7 @@ project(LAB_FCG VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD          11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS        OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(WIN32)
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${PROJECT_SOURCE_DIR}/bin/Debug")
