@@ -249,6 +249,16 @@ GLint g_surface_type_uniform;
 #define NUM_BLUE_BUNNIES 8
 #define GREEN_BUNNY_PADDING 1
 
+#define SPHERE 0
+#define BUNNY 1
+#define PLANE 2
+
+#define GOLD_SURFACE 1
+#define BLUE_PLASTIC_SURFACE 3
+#define RED_VELVET_SURFACE 4
+#define JADE_SURFACE 6
+#define BROWN_SURFACE 8
+
 // glm::vec4 green_bunny_pos(int bunny_i, float delta_t, float speed) {
 //   static float t = 0;
 //
@@ -264,6 +274,19 @@ GLint g_surface_type_uniform;
 //
 //   t += delta_t;
 // }
+
+void draw(int object_id, glm::mat4 model, int surface, const char *name) {
+  glUniformMatrix4fv(g_model_uniform, 1, GL_FALSE, glm::value_ptr(model));
+  glUniform1i(g_object_id_uniform, object_id);
+  glUniform1i(g_surface_type_uniform, surface);
+  DrawVirtualObject(name);
+}
+void draw_bunny(glm::mat4 model, int surface) {
+  draw(BUNNY, model, surface, "the_bunny");
+}
+void draw_sphere(glm::mat4 model, int surface) {
+  draw(SPHERE, model, surface, "the_sphere");
+}
 
 int main(int argc, char *argv[]) {
   // Inicializamos a biblioteca GLFW, utilizada para criar uma janela do
@@ -474,15 +497,6 @@ int main(int argc, char *argv[]) {
     glUniformMatrix4fv(g_projection_uniform, 1, GL_FALSE,
                        glm::value_ptr(projection));
 
-#define SPHERE 0
-#define BUNNY 1
-#define PLANE 2
-
-#define GOLD_SURFACE 1
-#define BLUE_PLASTIC_SURFACE 3
-#define RED_VELVET_SURFACE 4
-#define JADE_SURFACE 6
-
     // Desenhamos o modelo da esfera
     // model = Matrix_Translate(-2.0f, 0.0f, 0.0f);
     // glUniformMatrix4fv(g_model_uniform, 1, GL_FALSE, glm::value_ptr(model));
@@ -493,33 +507,26 @@ int main(int argc, char *argv[]) {
     // Desenhamos três coelhos com as cores verde, dourada e azul.
     // const int bunny_surfaces[3] = {JADE_SURFACE, GOLD_SURFACE,
     //                                BLUE_PLASTIC_SURFACE};
+    glm::mat4 hat =
+        Matrix_Translate(-0.6, 0.6, 0.2) * Matrix_Scale(0.4, 0.15, 0.4);
 
     // draw outer green bunnies
     for (int i = 0; i < NUM_GREEN_BUNNIES; ++i) {
       model = stt.green_mat(stt.green_perimeter() / NUM_GREEN_BUNNIES, i);
-      // model = Matrix_Translate(pos.x, pos.y, pos.z);
-      glUniformMatrix4fv(g_model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-      glUniform1i(g_object_id_uniform, BUNNY);
-      glUniform1i(g_surface_type_uniform, JADE_SURFACE);
-      DrawVirtualObject("the_bunny");
+      draw_bunny(model, JADE_SURFACE);
+      draw_sphere(model * hat, BROWN_SURFACE);
     }
     // draw blue circle bunnies
     for (int i = 0; i < NUM_BLUE_BUNNIES; ++i) {
       model = stt.blue_mat(BLUE_MOD / NUM_BLUE_BUNNIES, i);
-      // model = Matrix_Translate(pos.x, pos.y, pos.z);
-      glUniformMatrix4fv(g_model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-      glUniform1i(g_object_id_uniform, BUNNY);
-      glUniform1i(g_surface_type_uniform, BLUE_PLASTIC_SURFACE);
-      DrawVirtualObject("the_bunny");
+      draw_bunny(model, BLUE_PLASTIC_SURFACE);
+      draw_sphere(model * hat, BROWN_SURFACE);
     }
     // draw yellow diamond bunnies
     for (int i = 0; i < NUM_YELLOW_BUNNIES; ++i) {
       model = stt.yellow_mat(stt.yellow_perimeter() / NUM_YELLOW_BUNNIES, i);
-      // model = Matrix_Translate(pos.x, pos.y, pos.z);
-      glUniformMatrix4fv(g_model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-      glUniform1i(g_object_id_uniform, BUNNY);
-      glUniform1i(g_surface_type_uniform, GOLD_SURFACE);
-      DrawVirtualObject("the_bunny");
+      draw_bunny(model, GOLD_SURFACE);
+      draw_sphere(model * hat, BROWN_SURFACE);
     }
 
     // Desenhamos o plano do chão

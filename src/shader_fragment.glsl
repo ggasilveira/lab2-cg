@@ -82,6 +82,21 @@ void setSurfaceParams()
         clearcoat       = 0.15;
         clearcoatGloss  = 0.65;
     }
+    else if ( surface_type == 8 )
+    {
+        // Subsurface wax / jade-like surface
+        baseColor       = vec3(0.226, 0.089, 0.0) * 0.9; // Brown
+        metallic        = 0.0;
+        subsurface      = 0.0;
+        specular        = 0.55;
+        roughness       = 0.75;
+        specularTint    = 0.0;
+        anisotropic     = 0.0;
+        sheen           = 8.0;
+        sheenTint       = 0.0;
+        clearcoat       = 0.0;
+        clearcoatGloss  = 1.0;
+    }
     else
     {
         // Rough blue plastic surface
